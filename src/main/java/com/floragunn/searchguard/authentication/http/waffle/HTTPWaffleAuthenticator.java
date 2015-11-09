@@ -71,7 +71,7 @@ public class HTTPWaffleAuthenticator implements HTTPAuthenticator {
         if (authorizationHeader.isNull()) {
 
             final BytesRestResponse wwwAuthenticateResponse = new BytesRestResponse(RestStatus.UNAUTHORIZED);
-            wwwAuthenticateResponse.addHeader("WWW-Authenticate", "Negotiate");
+            //wwwAuthenticateResponse.addHeader("WWW-Authenticate", "Negotiate");
             wwwAuthenticateResponse.addHeader("WWW-Authenticate", "NTLM");
             channel.sendResponse(wwwAuthenticateResponse);
             return null;
@@ -114,9 +114,11 @@ public class HTTPWaffleAuthenticator implements HTTPAuthenticator {
         }
 
         final IWindowsIdentity identity = securityContext.getIdentity();
+        String userName = identity.getFqn();
         securityContext.dispose();
 
-        final User authenticatedUser = backend.authenticate(new AuthCredentials(identity.getFqn(), identity));
+
+        final User authenticatedUser = new User(userName);
 
         //authorizator must accept  IWindowsIdentity
         authorizator.fillRoles(authenticatedUser, (new AuthCredentials(identity.getFqn(), identity)));

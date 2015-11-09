@@ -57,11 +57,18 @@ public class WaffleAuthenticationBackend implements AuthenticationBackend {
     @Override
     public User authenticate(final AuthCredentials credentials) throws AuthException {
         //TODO FUTURE check login waffle
-        final String[] domainUsername = credentials.getUsername().split("\\");
+        final String[] domainUsername = credentials.getUsername().split("\\\\");
 
         try {
+            String password;
+            if (credentials.getPassword()==null){
+                password = null;
+            }else{
+                password = String.valueOf(credentials.getPassword());
+            }
+            
             final IWindowsIdentity identity = authProvider.logonDomainUser(domainUsername[1], domainUsername[0],
-                    new String(credentials.getPassword()));
+                    password);
 
             if (identity == null) {
                 throw new AuthException("Cannot authenticate, windows identity is null");
