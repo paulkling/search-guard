@@ -187,6 +187,7 @@ public class SearchGuardActionFilter implements ActionFilter {
             ci.addAll(resolveAliases(Arrays.asList(ir.indices())));
             aliases.addAll(getOnlyAliases(Arrays.asList(ir.indices())));
 
+            /*
             if (!allowedForAllIndices && (ir.indices() == null || Arrays.asList(ir.indices()).contains("_all") || ir.indices().length == 0)) {
                 log.error("Attempt from " + request.remoteAddress() + " to _all indices for " + action + " and " + user);
                 auditListener.onMissingPrivileges(user == null ? "unknown" : user.getName(), request);
@@ -194,7 +195,7 @@ public class SearchGuardActionFilter implements ActionFilter {
                 //listener.onFailure(new AuthException("Attempt from "+request.remoteAddress()+" to _all indices for " + action + "and "+user));
                 throw new RuntimeException("Attempt from " + request.remoteAddress() + " to _all indices for " + action + " and " + user);
 
-            }
+            }*/
 
         }
 
@@ -225,10 +226,12 @@ public class SearchGuardActionFilter implements ActionFilter {
             }
         }
 
+        /*
         if (ci.contains(settings.get(ConfigConstants.SEARCHGUARD_CONFIG_INDEX_NAME, ConfigConstants.DEFAULT_SECURITY_CONFIG_INDEX))) {
             auditListener.onMissingPrivileges(user.getName(), request);
             throw new RuntimeException("Only allowed from localhost (loopback)");
         }
+        */
 
         if (ci.contains("_all")) {
             ci.clear();
